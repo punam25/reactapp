@@ -4,3 +4,12 @@
     text-align: center;
     background-color: cyan;
 }
+.body{
+    background-color:white;
+}
+.materialcss{
+    background-color:white;
+    padding: 50px;
+    margin-inline: 10px;   
+
+}

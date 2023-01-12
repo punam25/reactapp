@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, CssBaseline, Divider, Typography } from "@mui/material";
+import { Box, Container, CssBaseline, Divider, Typography, InputLabel } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import FormControl from "@mui/material/FormControl";
@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import FormUpdate from "./formUpdate";
 import FormGroup from "@mui/material/FormGroup";
 import Checkbox from "@mui/material/Checkbox";
-import FormHelperText from "@mui/material/FormHelperText";
+
 
 const AdmissionForm = (props) => {
     const [firstName, setFirstName] = useState();
@@ -20,12 +20,15 @@ const AdmissionForm = (props) => {
     const [lastName, setLastName] = useState();
     const [gender, setGender] = useState("");
     const [ischeckBox1, setIsCheckBox1] = useState();
-    const[ischeckBox2,setIsCheckBox2]=useState();
-    const[ischeckBox3,setIsCheckBox3]=useState();
-    const[ischeckBox4,setIsCheckBox4]=useState();
+    const [ischeckBox2, setIsCheckBox2] = useState();
+    const [ischeckBox3, setIsCheckBox3] = useState();
+    const [ischeckBox4, setIsCheckBox4] = useState();
     const [age, setAge] = useState("");
+    const [technology, setTechnology] = useState("");
     const [completeForm, setCompleteForm] = useState({});
     const [formToPropogate, setFormToPropogate] = useState({});
+    const checkboxex = { ischeckBox1, ischeckBox2, ischeckBox3, ischeckBox4 };
+    // console.log(checkboxex);
 
     const firstNameChange = (event) => {
         setFirstName(event.target.value);
@@ -79,7 +82,7 @@ const AdmissionForm = (props) => {
 
         setCompleteForm(form);
     }
-const onCheckBox4Change = (event) => {
+    const onCheckBox4Change = (event) => {
         setIsCheckBox4(event.target.value);
         const form = { ...completeForm };
         form.ischeckBox4 = event.target.value;
@@ -92,12 +95,21 @@ const onCheckBox4Change = (event) => {
         setAge(event.target.value);
         const form = { ...completeForm }
         form.age = event.target.value;
+        setCompleteForm(form);
+
+
+    }
+    const handleDevloperChange = (event) => {
+        setTechnology(event.target.value);
+        const form = { ...completeForm }
+        form.technology = event.target.value;
 
         setCompleteForm(form);
     }
     useEffect(() => {
         setGender('female');
-        setAge(28);
+
+
     }, [setGender]);
 
     const handleSubmit = () => {
@@ -107,12 +119,13 @@ const onCheckBox4Change = (event) => {
         }, 5000);
 
 
+
     }
     return (
         <>
             <React.Fragment>
                 <CssBaseline />
-                <Container maxWidth="sm">
+                <Container maxWidth="md">
                     <Box
                         sx={{
                             textAlign: "center",
@@ -126,13 +139,13 @@ const onCheckBox4Change = (event) => {
                     <Divider />
                     <Box
                         sx={{
-                            bgcolor: '#cfe8fc',
+                            border: 1,
                             display: "flex",
                             padding: 5
                         }}
                     >
 
-                        <FormControl>
+                        <FormControl sx={{ justifyContent: "space-between" }}>
 
                             <FormLabel id="demo-radio-buttons-group-label">
                                 Personal Info
@@ -142,7 +155,7 @@ const onCheckBox4Change = (event) => {
                                     display: "flex",
                                     padding: 2,
                                     border: "1px dashed teal",
-                                    justifyContent: "space-evenly",
+                                    justifyContent: "space-between",
 
                                 }}
                             >
@@ -163,74 +176,114 @@ const onCheckBox4Change = (event) => {
                                     onChange={lastNameChange}
                                     variant="outlined" />
                             </Box>
-                            <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
-                            <RadioGroup
-                                aria-labelledby="demo-radio-buttons-group-label"
-                                name="radio-buttons-group"
-                                value={gender}
-                                onChange={onGenderName}
+                            <br />
 
+                            <Box
+                                sx={{
+                                     display: "flex",
+                                     
+                            
+                                }}
                             >
-                                <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                <FormControlLabel value="other" control={<Radio />} label="Other" />
-                            </RadioGroup>
-                            <Box sx={{ display: 'flex' }}>
-                                <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-                                    <FormLabel component="legend">Coffee i Like</FormLabel>
-                                    <FormGroup>
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    value="check1"
-                                                    onClick={onCheckBox1Change} name="espresso" />
-                                            }
-                                            label="espresso"
-                                        />
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox value="check2"
-                                                    onClick={onCheckBox2Change}
-                                                    name="cappachinoo" />
-                                            }
-                                            label="cappachinoo"
-                                        />
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox value="check3"
-                                                    onClick={onCheckBox3Change}
-                                                    name="flatwhite" />
-                                            }
-                                            label="flat white"
-                                        />
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox value="check4"
-                                                    onClick={onCheckBox4Change}
-                                                    name="longbank" />
-                                            }
-                                            label="long blank"
-                                        />
+                            <FormLabel id="demo-radio-buttons-group-label" sx={{ fontWeight: "bold"}}>Gender</FormLabel>
+                            
+                            
+                                <RadioGroup
+                                    aria-labelledby="demo-radio-buttons-group-label"
+                                    name="radio-buttons-group"
+                                    value={gender}
+                                    onChange={onGenderName}
+                                >
+                                    <br />
+                                    <FormControlLabel value="female" control={<Radio />} label="Female" />
+                                    <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                    <FormControlLabel value="other" control={<Radio />} label="Other" />
+                                </RadioGroup>
+                                <Box>
+                                    <FormControl sx={{ width: 300, marginLeft: 40 }} component="fieldset" variant="standard">
+                                        <FormLabel component="legend" sx={{ fontWeight: "bold", justifyContent: "center" }}>Coffee i Like</FormLabel>
+                                        <FormGroup>
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox
+                                                        value="espresso"
+                                                        onClick={onCheckBox1Change} name="espresso" />
+                                                }
+                                                label="espresso"
+                                            />
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox value="cappachinoo"
+                                                        onClick={onCheckBox2Change}
+                                                        name="cappachinoo" />
+                                                }
+                                                label="cappachinoo"
+                                            />
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox value="flat-white"
+                                                        onClick={onCheckBox3Change}
+                                                        name="flatwhite" />
+                                                }
+                                                label="flat white"
+                                            />
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox value="long-black"
+                                                        onClick={onCheckBox4Change}
+                                                        name="longblack" />
+                                                }
+                                                label="long black"
+                                            />
 
 
-                                    </FormGroup>
+                                        </FormGroup>
+
+                                    </FormControl>
+                                </Box>
+                            </Box>
+                            <br />
+                            <Box sx={{
+                                justifyContent: "space-between"
+
+                            }}>
+
+                                <FormControl sx={{ width: 250 }}>
+                                    <InputLabel id="  ">Age</InputLabel>
+
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={age}
+                                        label="Age"
+                                        onChange={handleAgeChange}
+                                    >
+                                        <MenuItem value={10}>Ten</MenuItem>
+                                        <MenuItem value={28}>Twenty Eight</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                <FormControl sx={{ width: 250, marginLeft: 10 }}>
+                                    <InputLabel id="av">Developer In</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={technology}
+                                        label="technology"
+                                        onChange={handleDevloperChange}
+                                    >
+                                        <MenuItem value={"Database"}>Database</MenuItem>
+                                        <MenuItem value={"Api"}>Api</MenuItem>
+                                        <MenuItem value={"Ui"}>Ui</MenuItem>
+                                        <MenuItem value={"Devops"}>Devops</MenuItem>
+                                    </Select>
 
                                 </FormControl>
 
                             </Box>
 
 
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={age}
-                                label="Age"
-                                onChange={handleAgeChange}
-                            >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={28}>Twenty Eight</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
+
                             <Box
                                 sx={{
                                     marginY: 2,
@@ -240,8 +293,9 @@ const onCheckBox4Change = (event) => {
                                 }}
                             >
                                 {
+
                                     <Button variant="contained"
-                                        disabled={(!completeForm.firstName && !completeForm.middleName && !completeForm.lastName && completeForm.gender !== "")}
+                                        disabled={(!completeForm.firstName) && (!completeForm.middleName)}
                                         onClick={handleSubmit}>
                                         Submit
                                     </Button>
@@ -250,7 +304,7 @@ const onCheckBox4Change = (event) => {
 
                             </Box>
 
-                        </FormControl>
+                        </FormControl >
                     </Box>
 
                     <pre>{JSON.stringify(completeForm, null, 3)}</pre>

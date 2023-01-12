@@ -2,13 +2,14 @@ import React from "react";
 import { CssBaseline, Container, Box } from "@mui/material";
 import Button from "@mui/material/Button";
 
-
 function FormUpdate(props) {
-
-       return (
+    const onChangeValue=()=>{
+        alert(JSON.stringify(props.info));
+    }
+    return (
         <>
             <CssBaseline />
-            <Container maxWidth="md">
+            <Container maxWidth="sm">
 
                 <Box
                     sx={{
@@ -30,7 +31,7 @@ function FormUpdate(props) {
                     
         
                     }}>
-                        <Button variant="contained" color="success">
+                        <Button variant="contained" color="success"onClick={onChangeValue}>
                             Confirm
                         </Button>
                     </Box>
