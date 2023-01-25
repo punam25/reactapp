@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, CssBaseline, Divider, Typography, InputLabel } from "@mui/material";
+import { Box, Container, CssBaseline, Divider, Typography, InputLabel, CircularProgress } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import FormControl from "@mui/material/FormControl";
@@ -19,15 +19,13 @@ const AdmissionForm = (props) => {
     const [middleName, setMiddleName] = useState();
     const [lastName, setLastName] = useState();
     const [gender, setGender] = useState("");
-    const [ischeckBox1, setIsCheckBox1] = useState();
-    const [ischeckBox2, setIsCheckBox2] = useState();
-    const [ischeckBox3, setIsCheckBox3] = useState();
-    const [ischeckBox4, setIsCheckBox4] = useState();
+    const [selectedCoffees,setSelectedCoffees]=useState([]);
     const [age, setAge] = useState("");
     const [technology, setTechnology] = useState("");
+    const[submissionInProgress,setSubmissionInProgress]=useState(false);
     const [completeForm, setCompleteForm] = useState({});
     const [formToPropogate, setFormToPropogate] = useState({});
-    const checkboxex = { ischeckBox1, ischeckBox2, ischeckBox3, ischeckBox4 };
+    // const checkboxex = { ischeckBox1, ischeckBox2, ischeckBox3, ischeckBox4 };
     // console.log(checkboxex);
 
     const firstNameChange = (event) => {
@@ -60,37 +58,7 @@ const AdmissionForm = (props) => {
 
         setCompleteForm(form);
     }
-    const onCheckBox1Change = (event) => {
-        setIsCheckBox1(event.target.value);
-        const form = { ...completeForm };
-        form.ischeckBox1 = event.target.value;
-
-        setCompleteForm(form);
-    }
-    const onCheckBox2Change = (event) => {
-        setIsCheckBox2(event.target.value);
-        const form = { ...completeForm };
-        form.ischeckBox2 = event.target.value;
-
-        setCompleteForm(form);
-    }
-
-    const onCheckBox3Change = (event) => {
-        setIsCheckBox3(event.target.value);
-        const form = { ...completeForm };
-        form.ischeckBox3 = event.target.value;
-
-        setCompleteForm(form);
-    }
-    const onCheckBox4Change = (event) => {
-        setIsCheckBox4(event.target.value);
-        const form = { ...completeForm };
-        form.ischeckBox4 = event.target.value;
-
-        setCompleteForm(form);
-    }
-
-
+    
     const handleAgeChange = (event) => {
         setAge(event.target.value);
         const form = { ...completeForm }
@@ -106,16 +74,55 @@ const AdmissionForm = (props) => {
 
         setCompleteForm(form);
     }
-    useEffect(() => {
-        setGender('female');
+    const handleCoffeeChange=(event,type)=>{
+        console.log(`${type} value is - ${event.target.checked}`);
+
+        // determine the type
+        // determine wheather it is selected or unselected
+        // if selected 
+        // add on selected state
+        // else
+        // remove from selected state
+         if(event.target.checked){
+            const temp=[...selectedCoffees];
+            temp.push(type);
+            setSelectedCoffees(temp);
+
+            const form={...completeForm};
+            form.selectedCoffees=temp;
+            setCompleteForm(form);
+
+         }else{
+            //more
+            //loop over existing selected coffee
+            //for type that is unchecked remove it
+
+            const temp=[];
+            selectedCoffees.forEach((coffee)=>{
+                if(coffee !==type){
+                    temp.push(coffee);
+                }
+            });
+            setSelectedCoffees(temp);
+            const form={...completeForm};
+            form.selectedCoffees=temp;
+            setCompleteForm(form);
+         }
 
 
-    }, [setGender]);
+    };
+    // useEffect(() => {
+    //     setGender('female');
+
+
+    // }, [setGender]);
 
     const handleSubmit = () => {
         console.log(completeForm);
+        setSubmissionInProgress(true);
         setTimeout(() => {
             setFormToPropogate(completeForm);
+            setSubmissionInProgress(false);
         }, 5000);
 
 
@@ -139,7 +146,7 @@ const AdmissionForm = (props) => {
                     <Divider />
                     <Box
                         sx={{
-                            border: 1,
+                            border: 2,
                             display: "flex",
                             padding: 5
                         }}
@@ -180,68 +187,45 @@ const AdmissionForm = (props) => {
 
                             <Box
                                 sx={{
-                                     display: "flex",
-                                     
-                            
+                                    display: "flex",
+                                    justifyContent: "space-between"
+
+
                                 }}
                             >
-                            <FormLabel id="demo-radio-buttons-group-label" sx={{ fontWeight: "bold"}}>Gender</FormLabel>
-                            
-                            
-                                <RadioGroup
-                                    aria-labelledby="demo-radio-buttons-group-label"
-                                    name="radio-buttons-group"
-                                    value={gender}
-                                    onChange={onGenderName}
-                                >
-                                    <br />
-                                    <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                    <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                    <FormControlLabel value="other" control={<Radio />} label="Other" />
-                                </RadioGroup>
-                                <Box>
-                                    <FormControl sx={{ width: 300, marginLeft: 40 }} component="fieldset" variant="standard">
-                                        <FormLabel component="legend" sx={{ fontWeight: "bold", justifyContent: "center" }}>Coffee i Like</FormLabel>
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        value="espresso"
-                                                        onClick={onCheckBox1Change} name="espresso" />
-                                                }
-                                                label="espresso"
-                                            />
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox value="cappachinoo"
-                                                        onClick={onCheckBox2Change}
-                                                        name="cappachinoo" />
-                                                }
-                                                label="cappachinoo"
-                                            />
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox value="flat-white"
-                                                        onClick={onCheckBox3Change}
-                                                        name="flatwhite" />
-                                                }
-                                                label="flat white"
-                                            />
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox value="long-black"
-                                                        onClick={onCheckBox4Change}
-                                                        name="longblack" />
-                                                }
-                                                label="long black"
-                                            />
+                                <FormControl>
+                                    <FormLabel id="demo-radio-buttons-group-label" sx={{ fontWeight: "bold" }}>Gender</FormLabel>
 
 
-                                        </FormGroup>
+                                    <RadioGroup
+                                        aria-labelledby="demo-radio-buttons-group-label"
+                                        name="radio-buttons-group"
+                                        value={gender}
+                                        onChange={onGenderName}
+                                    >
 
-                                    </FormControl>
-                                </Box>
+                                        <FormControlLabel value="female" control={<Radio />} label="Female" />
+                                        <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                        <FormControlLabel value="other" control={<Radio />} label="Other" />
+                                    </RadioGroup>
+                                </FormControl>
+                                {/*coffee like plain,milk,dark,expresspo  */}
+                                <FormControl sx={{ width: 300, marginLeft: 40 }} component="fieldset" variant="standard">
+                                    <FormGroup>
+                                        <FormControlLabel control={<Checkbox onChange={(event)=>handleCoffeeChange(event,"plain")} />} label="plain"
+                                         />
+                                        <FormControlLabel control={<Checkbox onChange={(event)=>handleCoffeeChange(event,"milk")}/>} label="milk" 
+                                        />
+                                        <FormControlLabel control={<Checkbox onChange={(event)=>handleCoffeeChange(event,"dark")}/>} label="dark" 
+                                        />
+                                         <FormControlLabel control={<Checkbox onChange={(event)=>handleCoffeeChange(event,"exprespo")}/>} label="exprespo" 
+                                        />
+                                       
+                                       
+                                    </FormGroup>
+                                </FormControl>
                             </Box>
+
                             <br />
                             <Box sx={{
                                 justifyContent: "space-between"
@@ -249,8 +233,7 @@ const AdmissionForm = (props) => {
                             }}>
 
                                 <FormControl sx={{ width: 250 }}>
-                                    <InputLabel id="  ">Age</InputLabel>
-
+                                    <InputLabel id="abcd  ">Age</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -264,7 +247,7 @@ const AdmissionForm = (props) => {
                                     </Select>
                                 </FormControl>
                                 <FormControl sx={{ width: 250, marginLeft: 10 }}>
-                                    <InputLabel id="av">Developer In</InputLabel>
+                                    <InputLabel id="abcd">Developer In</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
@@ -292,15 +275,44 @@ const AdmissionForm = (props) => {
 
                                 }}
                             >
-                                {
+                                
 
-                                    <Button variant="contained"
-                                        disabled={(!completeForm.firstName) && (!completeForm.middleName)}
+                                    {/* <Button variant="contained"
+                                        disabled={(!completeForm.firstName)
+                                            || (!completeForm.technology)}
+                                        onClick={handleSubmit}>
+                                        Submit {JSON.stringify(submissionInProgress)}
+                                    </Button>
+                                 */}
+                                
+                                {/* {submissionInProgress && <CircularProgress/>} */}
+
+                                {submissionInProgress ?(
+                                <CircularProgress/>
+                                ):(
+                                     <Button variant="contained"
+                                     color="secondary"
+                                        disabled={(!completeForm.firstName)
+                                            || (!completeForm.technology)}
+                                        onClick={handleSubmit}>
+                                        Submit {JSON.stringify(submissionInProgress)}
+                                    </Button>
+                                
+
+                                )}
+                                 <Button variant="contained"
+                                     color="info"
+                                        disabled={submissionInProgress}
+                                        startIcon={
+                                            submissionInProgress ?(<CircularProgress size={20} />
+                                            ):(
+                                                <></>
+                                            )
+                                        }
                                         onClick={handleSubmit}>
                                         Submit
                                     </Button>
-
-                                }
+                                
 
                             </Box>
 
